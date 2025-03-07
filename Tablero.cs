@@ -130,5 +130,69 @@ namespace Hada
             return sb.ToString();
         }
 
+        private string DibujarTablero()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < TamTablero; i++)
+            {
+                for (int j = 0; j < TamTablero; j++)
+                {
+                    Coordenada c = new Coordenada(i, j);
+                    if (casillasTablero.ContainsKey(c))
+                    {
+                        string valor = casillasTablero[c];
+                        if (valor == "AGUA")
+                        {
+                            sb.Append("[AGUA] ");
+                        }
+                        else if (valor.EndsWith("_T"))
+                        {
+
+                            sb.Append($"[{valor}] ");
+                        }
+                        else
+                        {
+
+                            sb.Append($"[{valor}] ");
+                        }
+                    }
+                    else
+                    {
+                        sb.Append("[AGUA] ");
+                    }
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        private void cuandoEventoTocado(object sender, TocadoArgs e)
+        {
+            foreach (var key in casillasTablero.Keys)
+            {
+                if (key.Equals(e.CoordenadaImpacto))
+                {
+                    if (!casillasTablero[key].EndsWith("_T"))
+                        casillasTablero[key] = casillasTablero[key] + "_T";
+                    break;
+                }
+            }
+
+            bool existe = false;
+            foreach (var coord in coordenadasTocadas)
+            {
+                if (coord.Equals(e.CoordenadaImpacto))
+                {
+                    existe = true;
+                    break;
+                }
+            }
+            if (!existe)
+                coordenadasTocadas.Add(e.CoordenadaImpacto);
+
+            Console.WriteLine($"TABLERO: Barco [{e.Nombre}] tocado en Coordenada: {e.CoordenadaImpacto.ToString()}");
+        }
+
+
     }
 }
