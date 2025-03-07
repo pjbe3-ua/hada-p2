@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hada_p2
+namespace Hada
 {
     class Program
     {
         static void Main(string[] args)
         {
-            //primeros cambios
+            Game juego = new Game();
         }
     }
 }
