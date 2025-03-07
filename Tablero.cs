@@ -193,6 +193,26 @@ namespace Hada
             Console.WriteLine($"TABLERO: Barco [{e.Nombre}] tocado en Coordenada: {e.CoordenadaImpacto.ToString()}");
         }
 
+        private void cuandoEventoHundido(object sender, HundidoArgs e)
+        {
+            Console.WriteLine($"TABLERO: Barco [{e.Nombre}] hundido!!");
 
+            Barco barcoEliminado = null;
+            foreach (var barco in barcos)
+            {
+                if (barco.Nombre == e.Nombre)
+                {
+                    barcoEliminado = barco;
+                    break;
+                }
+            }
+            if (barcoEliminado != null && !barcosEliminados.Contains(barcoEliminado))
+                barcosEliminados.Add(barcoEliminado);
+
+            if (barcosEliminados.Count == barcos.Count)
+            {
+                eventoFinPartida?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 }
