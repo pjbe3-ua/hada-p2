@@ -22,4 +22,14 @@ namespace Hada
             CoordenadaImpacto = coordenadaImpacto;
         }
     }
+
+    public class HundidoArgs : EventArgs
+    {
+        public string Nombre { get; private set; }
+
+        public HundidoArgs(string nombre)
+        {
+            Nombre = nombre;
+        }
+    }
 }
