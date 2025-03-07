@@ -61,6 +61,28 @@ namespace Hada
             Columna = otra.Columna;
         }
 
-      
+        public override string ToString()
+        {
+            return $"({Fila},{Columna})";
+        }
+
+        public override int GetHashCode()
+        {
+            return Fila.GetHashCode() ^ Columna.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Coordenada otra)
+                return Equals(otra);
+            return false;
+        }
+
+        public bool Equals(Coordenada otra)
+        {
+            if (otra == null)
+                return false;
+            return this.Fila == otra.Fila && this.Columna == otra.Columna;
+        }
     }
 }
