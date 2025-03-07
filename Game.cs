@@ -74,5 +74,11 @@ namespace Hada
             }
         }
 
+        // Manejador del evento de fin de partida
+        private void cuandoEventoFinPartida(object sender, EventArgs e)
+        {
+            Console.WriteLine("PARTIDA FINALIZADA!!");
+            finPartida = true;
+        }
     }
 }
