@@ -38,5 +38,97 @@ namespace Hada
 
             inicializaCasillasTablero();
         }
+
+        private void inicializaCasillasTablero()
+        {
+            for (int i = 0; i < TamTablero; i++)
+            {
+                for (int j = 0; j < TamTablero; j++)
+                {
+                    Coordenada c = new Coordenada(i, j);
+                    bool ocupado = false;
+                    foreach (var barco in barcos)
+                    {
+                        foreach (var coord in barco.CoordenadasBarco.Keys)
+                        {
+                            if (coord.Equals(c))
+                            {
+                                casillasTablero[c] = barco.Nombre;
+                                ocupado = true;
+                                break;
+                            }
+                        }
+                        if (ocupado) break;
+                    }
+                    if (!ocupado)
+                    {
+                        casillasTablero[c] = "AGUA";
+                    }
+                }
+            }
+        }
+
+        public void Disparar(Coordenada c)
+        {
+            if (c.Fila < 0 || c.Fila >= TamTablero || c.Columna < 0 || c.Columna >= TamTablero)
+            {
+                Console.WriteLine($"La coordenada {c.ToString()} está fuera de las dimensiones del tablero.");
+                return;
+            }
+
+            coordenadasDisparadas.Add(c);
+
+            foreach (var barco in barcos)
+            {
+                barco.Disparo(c);
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var barco in barcos)
+            {
+                sb.Append($"[{barco.Nombre}] - DAÑOS: [{barco.NumDanyos}] - HUNDIDO: [{barco.hundido()}] - COORDENADAS: ");
+                foreach (var coord in barco.CoordenadasBarco.Keys)
+                {
+                    sb.Append($"[{coord.ToString()} :{barco.CoordenadasBarco[coord]}] ");
+                }
+                sb.AppendLine();
+            }
+
+            sb.AppendLine();
+            sb.Append("Coordenadas disparadas: ");
+            if (coordenadasDisparadas.Count > 0)
+            {
+                foreach (var c in coordenadasDisparadas)
+                {
+                    sb.Append($"{c.ToString()} ");
+                }
+            }
+            sb.AppendLine();
+
+            sb.Append("Coordenadas tocadas: ");
+            if (coordenadasTocadas.Count > 0)
+            {
+                foreach (var c in coordenadasTocadas)
+                {
+                    sb.Append($"{c.ToString()} ");
+                }
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                sb.AppendLine();
+            }
+
+            sb.AppendLine("CASILLAS TABLERO");
+            sb.AppendLine("-------");
+            sb.AppendLine(DibujarTablero());
+
+            return sb.ToString();
+        }
+
     }
 }
