@@ -44,5 +44,52 @@ namespace Hada
                 CoordenadasBarco[c] = Nombre;
             }
         }
+
+        public void Disparo(Coordenada c)
+        {
+            foreach (var key in CoordenadasBarco.Keys)
+            {
+                if (key.Equals(c))
+                {
+                    if (!CoordenadasBarco[key].EndsWith("_T"))
+                    {
+                        CoordenadasBarco[key] = CoordenadasBarco[key] + "_T";
+                        NumDanyos++;
+
+                        eventoTocado?.Invoke(this, new TocadoArgs(Nombre, c));
+
+                        if (hundido())
+                        {
+                            eventoHundido?.Invoke(this, new HundidoArgs(Nombre));
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+
+        public bool hundido()
+        {
+            foreach (var etiqueta in CoordenadasBarco.Values)
+            {
+                if (!etiqueta.EndsWith("_T"))
+                    return false;
+            }
+            return true;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Barco: {Nombre}");
+            sb.AppendLine($"Daños: {NumDanyos}");
+            sb.AppendLine($"Estado: {(hundido() ? "Hundido" : "A flote")}");
+            sb.AppendLine("Coordenadas:");
+            foreach (var kvp in CoordenadasBarco)
+            {
+                sb.AppendLine($"{kvp.Key.ToString()} -> {kvp.Value}");
+            }
+            return sb.ToString();
+        }
     }
 }
